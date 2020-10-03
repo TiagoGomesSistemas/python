@@ -1,8 +1,6 @@
 # imports #
 from flask import Flask, render_template, request, redirect, url_for
 from contato import Contato
-import MySQLdb
-conn = MySQLdb.connect(user='root', passwd='admin', host='127.0.0.1', port=3306)
 
 app = Flask(__name__)
 
@@ -21,7 +19,7 @@ def novo():
 @app.route('/contato', methods=['POST',])
 def contato():
     acesso = request.form['acessar']
-    return render_template('contato.html', tiulo='Contato', acesso=acesso, contatos=contatos)
+    return render_template('contato.html', titulo='Contato', acesso=acesso, contatos=contatos)
 
 @app.route('/endereco', methods=['POST',])
 def endereco():
