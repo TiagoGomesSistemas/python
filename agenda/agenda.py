@@ -1,11 +1,21 @@
 # imports #
 from flask import Flask, render_template, request, redirect, url_for
 from contato import Contato
+import pandas as pd
+import sqlalchemy
+
+engine = sqlalchemy.create_engine('mysql+pymysql://root:datascience@localhost:3306/agenda')
 
 # Main #
 app = Flask(__name__)
 
 contatos = []
+try:
+    df = pd.read_sql_table('agenda', engine)
+    for item in df[0]:
+        contatos.append(item)
+except:
+    pass
 
 # index.html #
 @app.route('/')
@@ -32,6 +42,11 @@ def endereco():
     for item in contatos:
         if item.nome == nome:
             item.consulta(cep, complemento)
+            df = pd.DataFrame(contatos)
+            df.to_sql(
+                name='agenda',
+                con=engine,
+            )
     return redirect(url_for('index'))
 
 # Cria novo contato e retorna para index.html #
@@ -43,6 +58,11 @@ def criar():
     email = request.form['email']
     contato = Contato(id, nome, telefone, email)
     contatos.append(contato)
+    df = pd.DataFrame(contatos)
+    df.to_sql(
+        name='agenda',
+        con=engine,
+    )
     return redirect(url_for('index'))
 
 # Chamada do app #
