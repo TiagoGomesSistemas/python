@@ -1,0 +1,55 @@
+{% extends "template.html" %}
+{% block conteudo %}
+    <h1>Contato</h1>
+    <table class="table table-striped table-responsive table-bordered">
+        <tbody>
+            {% for item in contatos %}
+                {% if item.nome == acesso %}
+                    <tr>
+                        <td class="esquerda">Nome</td>
+                        <td class="direita">{{ item.nome }}</td>
+                    </tr>
+                    <td class="esquerda">Telefone</td>
+                    <td class="direita">{{ item.telefone }}</td>
+                    </tr>
+                    <tr>
+                        <td class="esquerda">Email</td>
+                        <td class="direita">{{ item.email }}</td>
+                    </tr>
+                    {% for endereco in item.endereco %}
+                        <tr>
+                            <td class="esquerda">Endereço</td>
+                            <td class="direita">
+                                Rua {{ endereco['logadouro'] }}, {{ endereco['complemento'] }}<br>
+                                {{ endereco['bairro'] }}, {{ endereco['localidade'] }} - {{ endereco['uf'] }}
+                                CEP {{ endereco['cep'] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>CADASTRO DE ENDEREÇO</h2>
+        {% for item in contatos %}
+            {% if item.nome == acesso %}
+                <form action="{{ url_for('endereco') }}" method="post">
+                    <fieldset>
+                        <div class="form-group"}
+                            <label for="cep">Cep</label>
+                            <input type="text" id="cep" name="cep" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="complemento">Complemento</label>
+                            <input type="text" id="complemento" name="complemento" class="form-control">
+                        </div>
+                        <div>
+                            <input type="hidden" id="nome" name="nome" value="{{ item.nome }}"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
+                    </fieldset>
+                </form>
+            {% endif %}
+        {% endfor %}
+    <br><a href="{{ url_for('index') }}"><button class="btn">Voltar</button></a>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "template.html" %}
+{% block conteudo %}
+    <table class="table table-striped table-responsive table-bordered">
+        <thead>
+            <tr>
+                <th>Contato</th>
+                <th>Acessar</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in agenda %}
+                        <tr>
+                            <td>{{ item.nome }}</td>
+                            <form action="{{ url_for('contato') }}" method="post">
+                                <td><button name="acessar" id="acessar" value="{{ item.nome }}">Acessar</button></td>
+                            </form>
+                        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('novo') }}"><button class="btn btn-primary btn-salvar">Novo Contato</button></a>
+{% endblock %}
